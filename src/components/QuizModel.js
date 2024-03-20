@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import saveJson from './utilites/saveJson';
+import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 
 const QuizModel = () => {
     const [questions, setQuestions] = useState([]);
@@ -28,82 +30,86 @@ const QuizModel = () => {
     };
 
     const handleSaveToJson = () => {
-        const json = JSON.stringify(questions, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        a.href = url;
-        a.download = 'quiz_questions.json';
-        document.body.appendChild(a);
-        a.click();
-
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        saveJson(questions, 'quiz_questions.json');
     };
 
+    const heading = 'd-flex text-primary justify-content-center';
+    const btnAdd = 'btn btn-primary me-2 mt-3';
+    const btnSave ='btn btn-success mt-4 mb-4 ps-4 pe-4';
+
     return (  
-        <div className="container mt-5">
-            <h1 className="d-flex text-primary justify-content-center">Create Quiz Questions</h1>
-            <div className="mb-3">
-                <label htmlFor="questionInput" className="form-label">Question Text:</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="questionInput"
-                    value={questionText}
-                    onChange={(e) => setQuestionText(e.target.value)}
-                />
-            </div>
-            <div>
+        <Container className='mt-5'>
+            <h1 className={heading}>Create Quiz Questions</h1>
+            <Form className='mb-3'>
+                <Form.Group 
+                    controlId='questionInput'
+                    className='mb-3'>
+                    <Form.Label>Question Text:</Form.Label>
+                    <Form.Control
+                        type='text'
+                        value={questionText}
+                        onChange={(e) => setQuestionText(e.target.value)}
+                    />
+                </Form.Group>
+
                 {Object.keys(options).map((key) => (
-                    <div key={key} className="mb-3">
-                        <label htmlFor={`optionInput${key}`} className="form-label">{key}:</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id={`optionInput${key}`}
-                            value={options[key]}
-                            onChange={(e) => handleOptionChange(key, e.target.value)}
-                        />
-                    </div>
+                    <Form.Group key={key} className='mb-3'>
+                        <Row>
+                            <Form.Label column sm={1}>{key}</Form.Label>
+                            <Col>
+                            <Form.Control
+                                type='text'
+                                value={options[key]}
+                                onChange={(e) => handleOptionChange(key, e.target.value)} />
+                            </Col>
+                        </Row>
+                    </Form.Group>
                 ))}
-            </div>
-            <div className="mb-3">
-                <label htmlFor="correctAnswerInput" className="form-label">Correct Answer:</label>
-                <select
-                    className="form-select"
-                    id="correctAnswerInput"
-                    value={correctAnswer}
-                    onChange={(e) => handleCorrectAnswerChange(e.target.value)}>
 
-                    <option value="">Select correct answer</option>
-                    {Object.keys(options).map((key) => (
-                        <option key={key} value={key}>{key}</option>
-                    ))}
-                </select>
-            </div>
+                <Form.Group controlId='correctAnswerInput' className='mb-1'>
+                    <Form.Label>Correct Answer:</Form.Label>
+                    <Form.Select
+                        id="correctAnswerInput"
+                        value={correctAnswer}
+                        onChange={(e) => handleCorrectAnswerChange(e.target.value)}>
 
-            <button className="btn btn-primary me-2" onClick={handleAddQuestion}>Add Question</button>
+                        <option value=''>Select correct answer</option>
+                        {Object.keys(options).map((key) => (
+                            <option key={key} value={key}>{key}</option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+                <Button 
+                    className={btnAdd}
+                    onClick={handleAddQuestion}>
+                    Add Question
+                </Button>
+            </Form>
             <hr />
             <h2>Questions:</h2>
-            <ul className="list-group">
+            <ListGroup>
                 {questions.map((question, index) => (
-                    <li key={index} className="list-group-item">
+                    <ListGroup.Item key={index} variant="secondary">
                         <strong>{question.question}</strong>
-                        <ul className="list-group mt-2">
+                        <ListGroup className='mt-2'>
                             {Object.keys(question).filter(key => 
                                 key !== 'question' && key !== 'correct').map((key, index) => (
-                                <li key={index} className="list-group-item">{`${key}: ${question[key]}`}</li>
+                                <ListGroup.Item key={index}>
+                                    {`${key}: ${question[key]}`}
+                                </ListGroup.Item>
                             ))}
-                        </ul>
-                        <p><strong>Correct Answer:</strong> {question.correct}</p>
-                    </li>
+                        </ListGroup>
+                        <p><strong>Correct Answer:</strong>{question.correct}</p>
+                    </ListGroup.Item>
                 ))}
-            </ul>
+            </ListGroup>
             <hr />
-            <button className="btn btn-success mb-3" onClick={handleSaveToJson}>Save to JSON</button>
-        </div>
+            <Button
+                className={btnSave} 
+                onClick={handleSaveToJson}>
+                Save
+            </Button>
+        </Container>
     );
 }
  

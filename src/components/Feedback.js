@@ -1,25 +1,32 @@
 import React from 'react';
+import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 const Feedback = ({ quizData, selectedAnswer }) => {
+    const title = 'text-primary text-center mt-4 mb-3 fs-4 fw-bold';
+
     return (
-        <>
-            <h3 className="d-flex justify-content-center align-items-center fs-2 text-primary">
-                Feedback
-            </h3>
-            <ul>
+        <Container>
+            <Row>
+                <Col className={title}>Check the answers</Col>
+            </Row>
+            <ListGroup>
                 {quizData.map((question, index) => {
                     const isCorrect = selectedAnswer[index] === question.correct;
-                    const className = isCorrect ? 'text-success' : 'text-danger';
+                    const successDanger = isCorrect ? 'text-success' : 'text-danger';
                     const answerStatus = isCorrect ? 'Correct' : 'Incorrect';
 
                     return (
-                        <li key={index} className={className}>
+                        <ListGroup.Item 
+                            key={index} 
+                            className={successDanger}
+                            variant='secondary'>
+
                             {question.question} - {answerStatus}
-                        </li>
+                        </ListGroup.Item>
                     );
                 })}
-            </ul>
-        </>
+            </ListGroup>
+        </Container>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import Feedback from './Feedback';
 
 const Quiz = () => {
@@ -11,7 +12,7 @@ const Quiz = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
-
+    
         reader.onload = (e) => {
             const content = e.target.result;
             const data = JSON.parse(content);
@@ -21,7 +22,7 @@ const Quiz = () => {
             setScore(0);
             setShowFeedback(false);
         };
-
+    
         reader.readAsText(file);
     };
 
@@ -49,52 +50,83 @@ const Quiz = () => {
         setShowFeedback(!showFeedback);
     };
 
+    const container = 'd-flex justify-content-center align-items-center flex-column';
+    const label = 'text-primary fs-3 fw-bold mt-5 mb-3';
+    const quizContainer = 'w-100 h-100 p-4 mt-5 mb-4 border rounded';
+    const colScore = 'mb-2 fs-6 text-success';
+    const colQuestion = 'mt-2 mb-4 fs-5 text-primary';
+    const listGroup = 'list-unstyled fs-6';
+    const btnSubmit = 'btn-success mt-4 w-100';
+    const answersTxt = 'text-success text-center mt-5 mb-4 fs-4';
+    const colBtn = 'd-flex justify-content-center gap-4 mt-3 mb-5';
+
     return (
-        <div className="quiz-container d-flex justify-content-center align-items-center flex-column" id="quiz">
-            <div className="mt-5 mb-3">
-                <h2 className="text-primary fs-3">Select a JSON file to start the quiz</h2>
-                <input type="file" onChange={handleFileUpload} accept=".json" className="form-control mt-3" />
-            </div>
+        <Container id='quiz' className={container}>
+            <Form.Group>
+                <Form.Label className={label}>Select a JSON file to start the Quiz</Form.Label>
+                <Form.Control 
+                    type='file' 
+                    accept='.json'
+                    onChange={handleFileUpload} 
+                />
+            </Form.Group>
 
             {quizData && currentQ < quizData.length ? (
-                <div className="mw-100 w-75 h-75 p-4 border border-2 rounded">
-                   <h3 className="mt-3 mb-3 text-success">
-                        Question {currentQ + 1} of {quizData.length}
-                    </h3>
-                    <hr />
-                    <h2 id="question" className="mt-3 mb-3">
-                        {quizData[currentQ].question}
-                    </h2>
-                    <ul className="list-unstyled fs-5">
+                <Container className={quizContainer}>
+                    <Row>
+                        <Col className={colScore}>
+                            Question {currentQ + 1} of {quizData.length}
+                        </Col><hr />
+                        <Col id='question' className={colQuestion}>
+                            {quizData[currentQ].question}
+                        </Col>
+                    </Row>
+                    <ListGroup className={listGroup}>
                         {['a', 'b', 'c', 'd'].map((option) => (
-                            <li key={option} className="mb-2">
-                                <input
-                                    type="radio"
+                            <ListGroup.Item key={option} action variant="secondary" >
+                                <Form.Check
+                                    type='radio'
                                     id={option}
-                                    name="answer"
-                                    style={{ marginRight: "0.5rem" }}
+                                    label={quizData[currentQ][option]}
                                     checked={selectedAnswer[currentQ] === option}
                                     onChange={() => handleAnswerSelect(option)}
                                 />
-                                <label htmlFor={option} className="ml-3">{quizData[currentQ][option]}</label>
-                            </li>
+                            </ListGroup.Item>
                         ))}
-                    </ul>
-                    <div className="text-center">
-                        <button id="submit" onClick={handleNextQuestion} className="btn btn-primary mt-3">Submit</button>
-                    </div>
-                </div>
+                    </ListGroup>
+                    <Button
+                        id='submit'
+                        className={btnSubmit}
+                        onClick={handleNextQuestion}>
+                        Submit
+                    </Button>
+                </Container>
             ) : quizData && currentQ >= quizData.length ? (
-                <div>
-                    <h2 className="text-success mt-5 ms-2 me-2">You answered correctly at {score} out of {quizData.length} questions</h2>
-                    <div className="d-flex justify-content-center gap-4 mt-3 mb-5">
-                        <button onClick={reloadQuiz} className="btn btn-success mt-4">Reload</button>
-                        <button onClick={handleFeedbackToggle} className="btn btn-info mt-4">Feedback</button>
-                    </div>
-                    {showFeedback && <Feedback quizData={quizData} selectedAnswer={selectedAnswer} />}
-                </div>
+                <Container>
+                    <Col className={answersTxt}>
+                        You answered correctly at <strong>{score}</strong> out of <strong>{quizData.length}</strong> questions
+                    </Col>
+                    
+                    <Col className={colBtn}>
+                        <Button 
+                            variant='success'
+                            onClick={reloadQuiz}>
+                            Reload
+                        </Button>
+                        <Button 
+                            variant='primary'
+                            onClick={handleFeedbackToggle}>
+                            Feedback
+                        </Button>
+                    </Col>
+                    <Row>
+                        {showFeedback && 
+                            <Feedback quizData={quizData} selectedAnswer={selectedAnswer} />
+                        }
+                    </Row>
+                </Container>
             ) : null}
-        </div> 
+        </Container> 
     );
 }
 

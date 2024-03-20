@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import NavigationBar from "./components/NavigationBar";
+import Navbar from "./components/Navbar";
 import Quiz from "./components/Quiz";
 import QuizModel from "./components/QuizModel";
 import Home from "./components/Home";
@@ -8,11 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
     return (
         <div>
-            <NavigationBar />
+            <Navbar />
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/quizModel" element={<QuizModel />} />
-                <Route path="/quiz" element={<Quiz />} /> 
+                <Route path="/quizcreator" element={<Home />} />
+                <Route path="/quizcreator/quizModel" element={<QuizModel />} />
+                <Route path="/quizcreator/quiz" element={<Quiz />} /> 
             </Routes>
         </div>
     );
