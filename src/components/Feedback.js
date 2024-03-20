@@ -7,7 +7,7 @@ const Feedback = ({ quizData, selectedAnswer }) => {
     return (
         <Container>
             <Row>
-                <Col className={title}>Check the answers</Col>
+                <Col className={title}>Check your answers</Col>
             </Row>
             <ListGroup>
                 {quizData.map((question, index) => {
