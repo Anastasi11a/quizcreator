@@ -1,9 +1,4 @@
-### Visit site  https://anastasi11a.github.io/quizcreator/
-
-###
 This App creates a React components for creating quizzes. 
-
-###
 Bootstrap is used to style the application interface.
 
 ### Home
@@ -35,17 +30,17 @@ The handleFeedbackToggle function is responsible for toggling the visibility of 
 ### Feedback
 This Feedback component iterates through each question in the quizData array, compares the user's selected answer with the correct answer, and provides feedback for each question based on whether the answer is correct or incorrect. The feedback is displayed as a list, with each item indicating the question text and whether the answer is correct or incorrect, styled accordingly.
 ____________________________________________________________________________
-### Technologies Used:
+Technologies Used:
 - React
 - React Router
 - Bootstrap
 
-### Features:
+Features:
 1. Quiz Creation: Users can create quizzes by adding questions, options, and selecting the correct answer.
 2. Quiz Taking: Users can take quizzes uploaded in JSON format, selecting answers for each question.
 3. Dynamic Feedback: After completing a quiz, users receive feedback on their answers, indicating correctness.
 4. File Upload: Quizzes are uploaded via JSON files, providing a standardized format for quiz data.
 Responsive Design: The application is designed to work seamlessly across different devices and screen sizes.
 
-### Purpose:
+Purpose:
 To facilitate quiz creation, taking, and feedback provision, enhancing educational activities and knowledge evaluation.
